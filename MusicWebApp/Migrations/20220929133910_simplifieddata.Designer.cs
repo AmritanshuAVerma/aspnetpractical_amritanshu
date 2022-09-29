@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MusicWebApp.Data;
 
@@ -10,9 +11,10 @@ using MusicWebApp.Data;
 namespace MusicWebApp.Migrations
 {
     [DbContext(typeof(MusicWebAppContext))]
-    partial class MusicWebAppContextModelSnapshot : ModelSnapshot
+    [Migration("20220929133910_simplifieddata")]
+    partial class simplifieddata
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -36,26 +38,6 @@ namespace MusicWebApp.Migrations
                     b.HasKey("AlbumId");
 
                     b.ToTable("Album");
-                });
-
-            modelBuilder.Entity("MusicWebApp.Models.Track", b =>
-                {
-                    b.Property<int>("TrackId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TrackId"), 1L, 1);
-
-                    b.Property<int>("AlbumId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TrackName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("TrackId");
-
-                    b.ToTable("Track");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,0 +1,77 @@
+﻿@model IEnumerable<MusicWebApp.Models.Album>
+
+@{
+    ViewData["Title"] = "AlbumList";
+}
+
+<script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+
+<h1>Album List</h1>
+
+
+<table class="table-bordered">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+             <th>
+               CheckBox
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    <input type="checkbox" id="@item.AlbumId" class="checkboxclass"/>
+                </td>
+             @*   <td>
+                    <a asp-action="Edit" asp-route-id="@item.AlbumId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.AlbumId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.AlbumId">Delete</a>
+                </td>*@
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<table class="tableTrack table-bordered">
+    <thead>
+        <tr>
+            <th>
+               Track
+            </th>
+            <th>
+                CheckBox
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+       <tr>
+           <td>Test Track</td>
+           <td>TestTrack</td>
+       </tr>
+    </tbody>
+</table>
+
+<script>
+    $(".tableTrack").hide();
+    $('.checkboxclass').change(function () {
+        // this will contain a reference to the checkbox
+        if (this.checked) {
+            // the checkbox is now checked
+            alert("call the Method to Update the list of Tracks");
+            $(".tableTrack").show();
+        } else {
+
+            $(".tableTrack").hide();
+            // the checkbox is now no longer checked
+        }
+    });
+</script>

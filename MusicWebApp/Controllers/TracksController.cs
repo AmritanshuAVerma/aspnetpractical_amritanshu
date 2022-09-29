@@ -10,85 +10,85 @@ using MusicWebApp.Models;
 
 namespace MusicWebApp.Controllers
 {
-    public class AlbumsController : Controller
+    public class TracksController : Controller
     {
         private readonly MusicWebAppContext _context;
 
-        public AlbumsController(MusicWebAppContext context)
+        public TracksController(MusicWebAppContext context)
         {
             _context = context;
         }
 
-        // GET: Albums
+        // GET: Tracks
         public async Task<IActionResult> Index()
         {
-              return View(await _context.Album.ToListAsync());
+              return View(await _context.Track.ToListAsync());
         }
 
-        // GET: Albums/Details/5
+        // GET: Tracks/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Album == null)
+            if (id == null || _context.Track == null)
             {
                 return NotFound();
             }
 
-            var album = await _context.Album
-                .FirstOrDefaultAsync(m => m.AlbumId == id);
-            if (album == null)
+            var track = await _context.Track
+                .FirstOrDefaultAsync(m => m.TrackId == id);
+            if (track == null)
             {
                 return NotFound();
             }
 
-            return View(album);
+            return View(track);
         }
 
-        // GET: Albums/Create
+        // GET: Tracks/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Albums/Create
+        // POST: Tracks/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AlbumId,Title")] Album album)
+        public async Task<IActionResult> Create([Bind("TrackId,TrackName,AlbumId")] Track track)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(album);
+                _context.Add(track);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(album);
+            return View(track);
         }
 
-        // GET: Albums/Edit/5
+        // GET: Tracks/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Album == null)
+            if (id == null || _context.Track == null)
             {
                 return NotFound();
             }
 
-            var album = await _context.Album.FindAsync(id);
-            if (album == null)
+            var track = await _context.Track.FindAsync(id);
+            if (track == null)
             {
                 return NotFound();
             }
-            return View(album);
+            return View(track);
         }
 
-        // POST: Albums/Edit/5
+        // POST: Tracks/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("AlbumId,Title")] Album album)
+        public async Task<IActionResult> Edit(int id, [Bind("TrackId,TrackName,AlbumId")] Track track)
         {
-            if (id != album.AlbumId)
+            if (id != track.TrackId)
             {
                 return NotFound();
             }
@@ -97,12 +97,12 @@ namespace MusicWebApp.Controllers
             {
                 try
                 {
-                    _context.Update(album);
+                    _context.Update(track);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AlbumExists(album.AlbumId))
+                    if (!TrackExists(track.TrackId))
                     {
                         return NotFound();
                     }
@@ -113,49 +113,49 @@ namespace MusicWebApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(album);
+            return View(track);
         }
 
-        // GET: Albums/Delete/5
+        // GET: Tracks/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Album == null)
+            if (id == null || _context.Track == null)
             {
                 return NotFound();
             }
 
-            var album = await _context.Album
-                .FirstOrDefaultAsync(m => m.AlbumId == id);
-            if (album == null)
+            var track = await _context.Track
+                .FirstOrDefaultAsync(m => m.TrackId == id);
+            if (track == null)
             {
                 return NotFound();
             }
 
-            return View(album);
+            return View(track);
         }
 
-        // POST: Albums/Delete/5
+        // POST: Tracks/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Album == null)
+            if (_context.Track == null)
             {
-                return Problem("Entity set 'MusicWebAppContext.Album'  is null.");
+                return Problem("Entity set 'MusicWebAppContext.Track'  is null.");
             }
-            var album = await _context.Album.FindAsync(id);
-            if (album != null)
+            var track = await _context.Track.FindAsync(id);
+            if (track != null)
             {
-                _context.Album.Remove(album);
+                _context.Track.Remove(track);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool AlbumExists(int id)
+        private bool TrackExists(int id)
         {
-          return _context.Album.Any(e => e.AlbumId == id);
+          return _context.Track.Any(e => e.TrackId == id);
         }
     }
 }

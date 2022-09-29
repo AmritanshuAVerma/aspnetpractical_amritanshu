@@ -12,17 +12,6 @@ namespace MusicWebApp.Models
 
         public int AlbumId { get; set; }
 
-        public int MediaTypeId { get; set; }
-      
-        public string Composer { get; set; }
-
-        public int Milliseconds { get; set; }
-       
-        public decimal UnitPrice { get; set; }
-
-        public virtual Album AlbumID { get; set; }
-    
-        //public virtual MediaType MediaType { get; set; }
      
     }
 }

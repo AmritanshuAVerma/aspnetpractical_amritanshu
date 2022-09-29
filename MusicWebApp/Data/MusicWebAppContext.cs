@@ -15,7 +15,6 @@ namespace MusicWebApp.Data
         }
 
         public DbSet<MusicWebApp.Models.Album> Album { get; set; } = default!;
-        public DbSet<MusicWebApp.Models.Artist> Artist { get; set; }
-        public DbSet<MusicWebApp.Models.Track> Track { get; set; }
+        public DbSet<MusicWebApp.Models.Track> Track { get; set; } = default!;
     }
 }
