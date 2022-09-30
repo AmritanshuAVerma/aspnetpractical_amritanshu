@@ -1,37 +1,55 @@
-﻿@model IEnumerable<MusicWebApp.Models.Album>
+﻿@model List<Album.BusinessLogic.Model.AlbumDto>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Home Page";
 }
 
-<h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Album Name
-            </th>
-           
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-          
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.AlbumId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.AlbumId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.AlbumId">Delete</a>
-            </td>
-        </tr>
+@using (Html.BeginForm("TracksAlbum", "Albums", FormMethod.Post))
+{
+    <div class="container">
+        <div class="col-md-12">
+            <div>
+                <h2 class="centreContent">Album List Table</h2>
+            </div>
+
+            <div class="row">
+                <br />
+                <div style="height:200px;overflow-y:hidden">
+                    <table class="table table-bordered">
+                        <tr>
+                            <th>Album Id</th>
+                            <th>
+                                Title
+                            </th>
+                            <th>Select</th>
+                        </tr>
+
+                        @for (var i = 0; i < Model.Count(); i++)
+                        {
+                            <tr>
+                                <td>                                    
+                                    @Html.DisplayFor(m => Model[i].AlbumId)
+                                </td>
+                                <td>
+                                    @Html.ActionLink(Model[i].AlbumName,"UpdateAlbumData","Albums",new {albumid = Model[i].AlbumId,albumName=Model[i].AlbumName },null)
+                                </td>
+                                <td>
+                                    @Html.HiddenFor(m => Model[i].AlbumId)
+                                    @Html.CheckBoxFor(m=> Model[i].IsChecked)
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-offset-2 col-md-10">
+                <button type="submit" value="submit" class="btn btn-warning">View Selected TrackList</button>
+            </div>
+        </div>
+    </div>
 }
-    </tbody>
-</table>
+<script type="text/javascript">
+    
+
+</script>

@@ -1,12 +1,32 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using MusicWebApp.Data;
+﻿
+using Album.Service;
+using Microsoft.Extensions.Options;
+using Album.Business;
+using MusicWebApp.Models;
+
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContext<MusicWebAppContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("MusicWebAppContext") ?? throw new InvalidOperationException("Connection string 'MusicWebAppContext' not found.")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+var environment = Environment.GetEnvironmentVariable("NETCORE_ENVIRONMENT");
+builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+builder.Configuration.AddJsonFile($"appsettings.{(string.IsNullOrEmpty(environment) ? "Production" : environment)}.json", true);
+
+builder.Services.Configure<ServiceEndpointOptions>(builder.Configuration);
+var endpointOptions = builder.Configuration.Get<ServiceEndpointOptions>();
+
+foreach (var endpoint in endpointOptions.ApiEndpoints)
+{
+    builder.Services.AddHttpClient(endpoint.Name, o =>
+    {
+        o.BaseAddress = new Uri(endpoint.Url);
+    });
+}
+builder.Services.AddServiceConfiguration();
+builder.Services.AddBusinessConfiguration();
+builder.Services.AddAutoMapper(typeof(Program));
+
+
 
 var app = builder.Build();
 
@@ -27,6 +47,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=AlbumDataView}/{action=Index}/{id?}");
+    pattern: "{controller=Albums}/{action=Index}/{id?}");
 
 app.Run();

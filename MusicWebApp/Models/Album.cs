@@ -1,11 +1,13 @@
 ﻿namespace MusicWebApp.Models
 {
-    public class Album
+    public class ServiceEndpointOptions
     {
-        
+        public ApiEndpoint[] ApiEndpoints { get; set; } = Array.Empty<ApiEndpoint>();
+    }
 
-        public int AlbumId { get; set; }
-        public string Title { get; set; }
-
+    public class ApiEndpoint
+    {
+        public string Name { get; set; }
+        public string Url { get; set; }
     }
 }

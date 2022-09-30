@@ -1,161 +1,93 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿
+using Album.BusinessLogic.IAlbum;
+using Album.BusinessLogic.Model;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using MusicWebApp.Data;
-using MusicWebApp.Models;
+
+
 
 namespace MusicWebApp.Controllers
 {
     public class AlbumsController : Controller
     {
-        private readonly MusicWebAppContext _context;
-
-        public AlbumsController(MusicWebAppContext context)
+        private readonly IAlbumBL _aBL;
+        public AlbumsController(IAlbumBL aBL)
         {
-            _context = context;
+            _aBL = aBL;
         }
 
-        // GET: Albums
-        public async Task<IActionResult> Index()
+        // Display Albums List
+        public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
-              return View(await _context.Album.ToListAsync());
+            //For UI Testing
+            //AlbumDto albumDto = new AlbumDto();
+
+            //albumDto.AlbumId = 1;
+            //albumDto.AlbumName = "TestAlbum";
+            //albumDto.TrackName = "Test Track";
+            //albumDto.IsChecked = false;
+            //List<AlbumDto> albums = new List<AlbumDto>();
+
+            //albums.Add(albumDto);
+            //return View(albums);
+            return View(await _aBL.GetAllAlbums(cancellationToken));
         }
 
-        // GET: Albums/Details/5
-        public async Task<IActionResult> Details(int? id)
+        // Show Album Edit
+        public IActionResult UpdateAlbumData(int albumid, string albumName)
         {
-            if (id == null || _context.Album == null)
-            {
-                return NotFound();
-            }
-
-            var album = await _context.Album
-                .FirstOrDefaultAsync(m => m.AlbumId == id);
-            if (album == null)
-            {
-                return NotFound();
-            }
-
-            return View(album);
+            var data = new AlbumDto();
+            data.AlbumName = albumName;
+            data.AlbumId = albumid;
+            return View("Update", data);
         }
 
-        // GET: Albums/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Albums/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // Update Album Data
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AlbumId,Title")] Album album)
+        public async Task<IActionResult> UpdateAlbum(AlbumDto albumDto, CancellationToken cancellationToken)
         {
-            if (ModelState.IsValid)
+            var result = await _aBL.UpdateAlbum(albumDto, cancellationToken);
+            if (result)
             {
-                _context.Add(album);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index");
             }
-            return View(album);
+            return View("Update", albumDto);
+        }
+        public async Task<IActionResult> TracksAlbum(List<AlbumDto> albums, CancellationToken cancellationToken)
+        {
+            var AlbumIds = (from item in albums where item.IsChecked == 
+                            true select new AlbumDto() { AlbumId = item.AlbumId }).ToList();
+
+            var result = await _aBL.GetAlbumTrackList(AlbumIds, cancellationToken);
+
+            //For UI Testing
+            //AlbumDto albumDto = new AlbumDto();
+
+            //albumDto.AlbumId = 2;
+            //albumDto.AlbumName = "TestAlbum2";
+            //albumDto.TrackName = "Test Track2";
+            //albumDto.IsChecked = false;
+            //albums.Add(albumDto);
+
+            //AlbumDto albumDto2 = new AlbumDto();
+            //albumDto2.AlbumId = 3;
+            //albumDto2.AlbumName = "TestAlbum3";
+            //albumDto2.TrackName = "Test Track3";
+            //albumDto2.IsChecked = false;
+            //albums.Add(albumDto2);
+
+
+
+            //List<AlbumDto> result = albums;
+
+            if (result != null)
+            {
+                return View("Tracks", result);
+            }
+
+            return base.View("Tracks", new AlbumDto());
+
+
         }
 
-        // GET: Albums/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null || _context.Album == null)
-            {
-                return NotFound();
-            }
-
-            var album = await _context.Album.FindAsync(id);
-            if (album == null)
-            {
-                return NotFound();
-            }
-            return View(album);
-        }
-
-        // POST: Albums/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("AlbumId,Title")] Album album)
-        {
-            if (id != album.AlbumId)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(album);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!AlbumExists(album.AlbumId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(album);
-        }
-
-        // GET: Albums/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null || _context.Album == null)
-            {
-                return NotFound();
-            }
-
-            var album = await _context.Album
-                .FirstOrDefaultAsync(m => m.AlbumId == id);
-            if (album == null)
-            {
-                return NotFound();
-            }
-
-            return View(album);
-        }
-
-        // POST: Albums/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            if (_context.Album == null)
-            {
-                return Problem("Entity set 'MusicWebAppContext.Album'  is null.");
-            }
-            var album = await _context.Album.FindAsync(id);
-            if (album != null)
-            {
-                _context.Album.Remove(album);
-            }
-            
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool AlbumExists(int id)
-        {
-          return _context.Album.Any(e => e.AlbumId == id);
-        }
     }
 }

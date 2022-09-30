@@ -1,0 +1,45 @@
+﻿@model IEnumerable<Album.BusinessLogic.Model.AlbumDto>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="container">
+
+    <div class="col-md-8">
+        <div class="col-6">
+            <h2 class="text-info">Track List</h2>
+        </div>
+        <div class="row">
+            <br />
+            <div>
+                <table class="table">
+                    <tr>
+                        <th>Album Id</th>
+                        <th>
+                            Title
+                        </th>
+                        <th>Track</th>
+                    </tr>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(m => item.AlbumId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(m => item.AlbumName)                              
+                            </td>
+                            <td>
+                                @Html.DisplayFor(m => item.TrackName)
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
