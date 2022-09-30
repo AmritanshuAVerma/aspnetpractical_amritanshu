@@ -19,17 +19,17 @@ namespace MusicWebApp.Controllers
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
             //For UI Testing
-            //AlbumDto albumDto = new AlbumDto();
+            AlbumDto albumDto = new AlbumDto();
 
-            //albumDto.AlbumId = 1;
-            //albumDto.AlbumName = "TestAlbum";
-            //albumDto.TrackName = "Test Track";
-            //albumDto.IsChecked = false;
-            //List<AlbumDto> albums = new List<AlbumDto>();
+            albumDto.AlbumId = 1;
+            albumDto.AlbumName = "TestAlbum";
+            albumDto.TrackName = "Test Track";
+            albumDto.IsChecked = false;
+            List<AlbumDto> albums = new List<AlbumDto>();
 
-            //albums.Add(albumDto);
-            //return View(albums);
-            return View(await _aBL.GetAllAlbums(cancellationToken));
+            albums.Add(albumDto);
+            return View(albums);
+            //return View(await _aBL.GetAllAlbums(cancellationToken));
         }
 
         // Show Album Edit
@@ -57,26 +57,28 @@ namespace MusicWebApp.Controllers
             var AlbumIds = (from item in albums where item.IsChecked == 
                             true select new AlbumDto() { AlbumId = item.AlbumId }).ToList();
 
-            var result = await _aBL.GetAlbumTrackList(AlbumIds, cancellationToken);
+            //var result = await _aBL.GetAlbumTrackList(AlbumIds, cancellationToken);
 
             //For UI Testing
-            //AlbumDto albumDto = new AlbumDto();
+            List<AlbumDto> albumsTest = new List<AlbumDto>();
+            AlbumDto albumDto = new AlbumDto();
 
-            //albumDto.AlbumId = 2;
-            //albumDto.AlbumName = "TestAlbum2";
-            //albumDto.TrackName = "Test Track2";
-            //albumDto.IsChecked = false;
-            //albums.Add(albumDto);
+            albumDto.AlbumId = 1;
+            albumDto.AlbumName = "TestAlbum2";
+            albumDto.TrackName = "Test Track2";
+            albumDto.IsChecked = false;
+            albumsTest.Add(albumDto);
 
-            //AlbumDto albumDto2 = new AlbumDto();
-            //albumDto2.AlbumId = 3;
-            //albumDto2.AlbumName = "TestAlbum3";
-            //albumDto2.TrackName = "Test Track3";
-            //albumDto2.IsChecked = false;
-            //albums.Add(albumDto2);
+            AlbumDto albumDto2 = new AlbumDto();
+            albumDto2.AlbumId = 2;
+            albumDto2.AlbumName = "TestAlbum3";
+            albumDto2.TrackName = "Test Track3";
+            albumDto2.IsChecked = false;
+            albumsTest.Add(albumDto2);
 
 
 
+            List<AlbumDto> result = albumsTest;
             //List<AlbumDto> result = albums;
 
             if (result != null)
