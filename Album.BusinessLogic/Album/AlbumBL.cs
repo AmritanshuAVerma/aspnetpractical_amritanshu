@@ -24,7 +24,7 @@ namespace Album.BusinessLogic.Album
 
         public async Task<List<AlbumDto>> GetAllAlbums(CancellationToken cancellationToken)
         {            
-            return _mapper.Map<List<AlbumDto>>(await albumService.GetAlbums(cancellationToken));            
+            return _mapper.Map<List<AlbumDto>>(await albumService.GetAllAlbums(cancellationToken));            
         }
 
         public async Task<bool> UpdateAlbum(AlbumDto albumDto, CancellationToken cancellationToken)
