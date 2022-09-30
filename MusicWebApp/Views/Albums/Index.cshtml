@@ -32,7 +32,10 @@
                                     @Html.DisplayFor(m => Model[i].AlbumId)
                                 </td>
                                 <td>
-                                    @Html.ActionLink(Model[i].AlbumName,"UpdateAlbumData","Albums",new {albumid = Model[i].AlbumId,albumName=Model[i].AlbumName },null)
+                                    @Html.ActionLink(Model[i].AlbumName
+                                                    ,"UpdateAlbumData"
+                                                    ,"Albums"
+                                                    ,new {albumid = Model[i].AlbumId,albumName=Model[i].AlbumName },null)
                                 </td>
                                 <td>
                                     @Html.HiddenFor(m => Model[i].AlbumId)
