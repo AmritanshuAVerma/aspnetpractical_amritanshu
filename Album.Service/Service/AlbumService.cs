@@ -19,7 +19,7 @@ namespace Album.Service.Service
             httpClient = httpClientFactory.CreateClient(EndpointNames.Album);
         }
 
-        public async Task<List<AlbumModel>> GetAlbums(CancellationToken cancellationToken)
+        public async Task<List<AlbumModel>> GetAllAlbums(CancellationToken cancellationToken)
         {
             JsonSerializerOptions jsonSerializerOptions = new JsonSerializerOptions
             {

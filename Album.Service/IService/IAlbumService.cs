@@ -9,7 +9,7 @@ namespace Album.Service.IService
 {
     public interface IAlbumService
     {
-        Task<List<AlbumModel>> GetAlbums(CancellationToken cancellationToken);
+        Task<List<AlbumModel>> GetAllAlbums(CancellationToken cancellationToken);
         Task<bool> UpdateAlbum(AlbumModel albumDto, CancellationToken cancellationToken);
         Task<List<AlbumModel>> GetAlbumTrack(List<AlbumModel> albumIds, CancellationToken cancellationToken);
     }
