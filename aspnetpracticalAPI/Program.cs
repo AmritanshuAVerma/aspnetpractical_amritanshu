@@ -30,12 +30,12 @@ builder.Services.AddHttpLogging(logging =>
     logging.MediaTypeOptions.AddText("application/javascript");
     logging.RequestBodyLogLimit = 4096;
     logging.ResponseBodyLogLimit = 4096;
-
 });
 
 builder.Services.AddAutoMapper(typeof(Program));
 var app = builder.Build();
 app.UseHttpLogging();
+app.UseGlobalExceptionHandler(app.Logger);
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -48,8 +48,6 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-
-app.UseGlobalExceptionHandler(app.Logger);
 
 app.UseRequestLogger();
 
